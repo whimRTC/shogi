@@ -1,8 +1,8 @@
 <template>
   <div class="main">
-    <div v-for="x in [0, 1, 2, 3, 4, 5, 6]" :key="x" class="row">
+    <div v-for="x in xRange" :key="x" class="row">
       <div
-        v-for="y in [0, 1, 2, 3, 4]"
+        v-for="y in yRange"
         :key="y"
         class="col"
         @drop="dropPiece($event, [x, y])"
@@ -20,6 +20,22 @@ export default {
   name: "Main",
   components: {
     Piece: () => import("@/components/main/Piece")
+  },
+  computed: {
+    xRange() {
+      if (this.$myTeam() === 0) {
+        return Array.from({ length: 7 }, (v, k) => k);
+      } else {
+        return Array.from({ length: 7 }, (v, k) => 6 - k);
+      }
+    },
+    yRange() {
+      if (this.$myTeam() === 0) {
+        return Array.from({ length: 5 }, (v, k) => k);
+      } else {
+        return Array.from({ length: 5 }, (v, k) => 4 - k);
+      }
+    }
   },
   methods: {
     dropPiece(event, targetPlace) {

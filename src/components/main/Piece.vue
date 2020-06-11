@@ -3,6 +3,7 @@
     <img
       :src="require(`@/assets/${label}.png`)"
       class="piece"
+      :class="{ opponent }"
       v-if="label"
       draggable
       @dragstart="dragPiece($event, [x, y])"
@@ -23,6 +24,9 @@ export default {
     },
     piece() {
       return (this.$whim.state.board[this.x] || {})[this.y];
+    },
+    opponent() {
+      return this.piece?.team === this.$myTeam();
     }
   },
   methods: {
@@ -47,5 +51,8 @@ export default {
 .piece {
   margin: auto;
   width: 60%;
+}
+.opponent {
+  transform: rotate(-180deg);
 }
 </style>
