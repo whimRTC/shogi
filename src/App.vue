@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Main class="main" />
+    <Main class="main" v-if="$whim.state.phase === 'initialized'" />
   </div>
 </template>
 
