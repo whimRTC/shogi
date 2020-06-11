@@ -21,7 +21,7 @@ Vue.prototype.$droppable = (originPlace, targetPlace) => {
 
   // コマが存在しない場合
   if (!piece) {
-    return null;
+    return !Vue.prototype.$piece(targetPlace);
   }
   // 移動先に味方のコマが存在する場合
   const targetPiece = Vue.prototype.$piece(targetPlace);

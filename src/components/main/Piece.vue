@@ -1,12 +1,15 @@
 <template>
-  <div class="piece-box" :class="{ droppable }">
+  <div class="piece-box" :class="[{ droppable }, `background-${ownerNumber}`]">
     <img
       :src="require(`@/assets/${label}.png`)"
       class="piece"
       :class="{ opponent }"
       v-if="label"
-      draggable
-      @dragstart="dragPiece($event, [x, y])"
+      :draggable="
+        this.$whim.state.turnOrder[this.$whim.state.currentTurnIndex] ===
+          this.$whim.accessUser.id
+      "
+      @dragstart="dragPiece($event, place)"
     />
   </div>
 </template>
@@ -14,8 +17,7 @@
 <script>
 export default {
   props: {
-    x: Number,
-    y: Number,
+    place: Array,
     dragging: Object || null
   },
   computed: {
@@ -24,13 +26,16 @@ export default {
       return this.piece?.label;
     },
     piece() {
-      return (this.$whim.state.board[this.x] || {})[this.y];
+      return (this.$whim.state.board[this.place[0]] || {})[this.place[1]];
     },
     droppable() {
       if (!this.dragging) {
         return false;
       }
-      return this.$droppable(this.dragging.place, [this.x, this.y]);
+      return this.$droppable(this.dragging.place, this.place);
+    },
+    ownerNumber() {
+      return this.$whim.state.turnOrder.indexOf(this.piece?.owner);
     },
     opponent() {
       return this.piece?.team !== this.$myTeam();
@@ -50,6 +55,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/colors.scss";
+
 .piece-box {
   display: flex;
   align-items: center;
@@ -65,5 +72,11 @@ export default {
 }
 .opponent {
   transform: rotate(-180deg);
+}
+
+@for $i from 0 to 7 {
+  .background-#{$i} {
+    background-color: rgba(map-get($user-colors, $i), 0.3);
+  }
 }
 </style>

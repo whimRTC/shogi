@@ -1,6 +1,12 @@
 <template>
-  <div id="app">
-    <Main class="main" v-if="$whim.state.phase === 'initialized'" />
+  <div id="app" v-if="$whim.state.phase === 'initialized'">
+    <Main class="main" />
+    <Player
+      v-for="user in $whim.users"
+      :key="user.id"
+      :class="whimUserWindowClass(user)"
+      :displayUser="user"
+    />
   </div>
 </template>
 
@@ -18,7 +24,8 @@ function random(a) {
 export default {
   name: "App",
   components: {
-    Main: () => import("@/components/main/Index")
+    Main: () => import("@/components/main/Index"),
+    Player: () => import("@/components/player/Index")
   },
   mounted() {
     setTimeout(() => {
@@ -163,9 +170,15 @@ export default {
         },
         team: team,
         turnOrder: userIds,
-        currentTurn: userIds[0]
+        currentTurnIndex: 0
       });
     }, 500);
   }
 };
 </script>
+<style lang="scss" scoped>
+.main {
+  position: relative;
+  z-index: 1;
+}
+</style>
