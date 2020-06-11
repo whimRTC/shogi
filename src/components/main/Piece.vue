@@ -1,6 +1,6 @@
 <template>
   <div class="piece-box">
-    <img :src="require(`@/assets/${label}.png`)" class="piece" />
+    <img :src="require(`@/assets/${label}.png`)" class="piece" v-if="label" />
   </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
   },
   computed: {
     label() {
-      return this.$whim.state.board[this.x][this.y].piece;
+      return this.$whim.state.board[this.x][this.y]?.piece;
     }
   }
 };
