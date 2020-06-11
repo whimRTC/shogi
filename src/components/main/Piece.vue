@@ -1,5 +1,5 @@
 <template>
-  <div class="piece-box">
+  <div class="piece-box" :class="{ droppable }">
     <img
       :src="require(`@/assets/${label}.png`)"
       class="piece"
@@ -11,10 +11,13 @@
 </template>
 
 <script>
+import droppable from "@/utils/droppable";
+
 export default {
   props: {
     x: Number,
-    y: Number
+    y: Number,
+    dragging: Object || null
   },
   computed: {
     label() {
@@ -23,10 +26,23 @@ export default {
     },
     piece() {
       return (this.$whim.state.board[this.x] || {})[this.y];
+    },
+    droppable() {
+      if (!this.dragging) {
+        return false;
+      }
+      if (this.piece) {
+        return false;
+      }
+      return droppable(this.dragging.label, this.dragging.place, [
+        this.x,
+        this.y
+      ]);
     }
   },
   methods: {
     dragPiece(event, place) {
+      this.$emit("dragging", { label: this.label, place });
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.setData("originPlaceX", place[0]);
@@ -47,5 +63,8 @@ export default {
 .piece {
   margin: auto;
   width: 60%;
+}
+.droppable {
+  background: #ffffff;
 }
 </style>

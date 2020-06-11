@@ -5,44 +5,68 @@
         v-for="y in [0, 1, 2, 3, 4]"
         :key="y"
         class="col"
+        :class="{ droppable: droppable }"
         @drop="dropPiece($event, [x, y])"
         @dragover.prevent
         @dragenter.prevent
       >
-        <Piece :x="x" :y="y" />
+        <Piece :x="x" :y="y" @dragging="setDragging" :dragging="dragging" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import droppable from "@/utils/droppable";
+
 export default {
   name: "Main",
+  data() {
+    return {
+      dragging: null
+    };
+  },
   components: {
     Piece: () => import("@/components/main/Piece")
   },
+  computed: {
+    droppable() {
+      if (!this.dragging) {
+        return false;
+      }
+      if (this.dragging.label === "fu") {
+        return false;
+      }
+      return true;
+    }
+  },
   methods: {
+    setDragging(payload) {
+      this.dragging = payload;
+    },
     dropPiece(event, targetPlace) {
       const originPlaceX = event.dataTransfer.getData("originPlaceX");
       const originPlaceY = event.dataTransfer.getData("originPlaceY");
       const pieceLabel = event.dataTransfer.getData("pieceLabel");
-      this.$whim.assignState({
-        board: {
-          [originPlaceX]: {
-            [originPlaceY]: null
+      if (!droppable(pieceLabel, [originPlaceX, originPlaceY], targetPlace))
+        this.$whim.assignState({
+          board: {
+            [originPlaceX]: {
+              [originPlaceY]: null
+            }
           }
-        }
-      });
+        });
       this.$whim.assignState({
         board: {
           [targetPlace[0]]: {
             [targetPlace[1]]: {
-              owner: this.$whim.accessUser.id,
+              owner: this.dragging.owner,
               label: pieceLabel
             }
           }
         }
       });
+      this.dragging = null;
     }
   }
 };
