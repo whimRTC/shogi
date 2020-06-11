@@ -1,11 +1,10 @@
 <template>
   <div class="main">
-    <div v-for="x in [0, 1, 2, 3, 4, 5, 6]" :key="x" class="row">
+    <div v-for="x in xRange" :key="x" class="row">
       <div
-        v-for="y in [0, 1, 2, 3, 4]"
+        v-for="y in yRange"
         :key="y"
         class="col"
-        :class="{ droppable: droppable }"
         @drop="dropPiece($event, [x, y])"
         @dragover.prevent
         @dragenter.prevent
@@ -17,8 +16,6 @@
 </template>
 
 <script>
-import droppable from "@/utils/droppable";
-
 export default {
   name: "Main",
   data() {
@@ -30,14 +27,19 @@ export default {
     Piece: () => import("@/components/main/Piece")
   },
   computed: {
-    droppable() {
-      if (!this.dragging) {
-        return false;
+    xRange() {
+      if (this.$myTeam() === 1) {
+        return Array.from({ length: 7 }, (v, k) => k);
+      } else {
+        return Array.from({ length: 7 }, (v, k) => 6 - k);
       }
-      if (this.dragging.label === "fu") {
-        return false;
+    },
+    yRange() {
+      if (this.$myTeam() === 1) {
+        return Array.from({ length: 5 }, (v, k) => k);
+      } else {
+        return Array.from({ length: 5 }, (v, k) => 4 - k);
       }
-      return true;
     }
   },
   methods: {
@@ -48,7 +50,8 @@ export default {
       const originPlaceX = event.dataTransfer.getData("originPlaceX");
       const originPlaceY = event.dataTransfer.getData("originPlaceY");
       const pieceLabel = event.dataTransfer.getData("pieceLabel");
-      if (!droppable(pieceLabel, [originPlaceX, originPlaceY], targetPlace))
+      console.log([originPlaceX, originPlaceY], targetPlace);
+      if (this.$droppable(this.dragging.place, targetPlace)) {
         this.$whim.assignState({
           board: {
             [originPlaceX]: {
@@ -56,16 +59,18 @@ export default {
             }
           }
         });
-      this.$whim.assignState({
-        board: {
-          [targetPlace[0]]: {
-            [targetPlace[1]]: {
-              owner: this.dragging.owner,
-              label: pieceLabel
+        this.$whim.assignState({
+          board: {
+            [targetPlace[0]]: {
+              [targetPlace[1]]: {
+                owner: this.dragging.piece.owner,
+                team: this.dragging.piece.team,
+                label: pieceLabel
+              }
             }
           }
-        }
-      });
+        });
+      }
       this.dragging = null;
     }
   }

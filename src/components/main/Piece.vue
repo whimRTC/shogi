@@ -3,6 +3,7 @@
     <img
       :src="require(`@/assets/${label}.png`)"
       class="piece"
+      :class="{ opponent }"
       v-if="label"
       draggable
       @dragstart="dragPiece($event, [x, y])"
@@ -11,8 +12,6 @@
 </template>
 
 <script>
-import droppable from "@/utils/droppable";
-
 export default {
   props: {
     x: Number,
@@ -31,18 +30,15 @@ export default {
       if (!this.dragging) {
         return false;
       }
-      if (this.piece) {
-        return false;
-      }
-      return droppable(this.dragging.label, this.dragging.place, [
-        this.x,
-        this.y
-      ]);
+      return this.$droppable(this.dragging.place, [this.x, this.y]);
+    },
+    opponent() {
+      return this.piece?.team !== this.$myTeam();
     }
   },
   methods: {
     dragPiece(event, place) {
-      this.$emit("dragging", { label: this.label, place });
+      this.$emit("dragging", { place, piece: this.piece });
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.setData("originPlaceX", place[0]);
@@ -66,5 +62,8 @@ export default {
 }
 .droppable {
   background: #ffffff;
+}
+.opponent {
+  transform: rotate(-180deg);
 }
 </style>
