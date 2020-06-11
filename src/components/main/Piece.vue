@@ -12,7 +12,8 @@ export default {
   },
   computed: {
     label() {
-      return this.$whim.state.board[this.x][this.y]?.piece;
+      // 存在しない場合は undefinedを返す
+      return (this.$whim.state.board[this.x] || {})[this.y]?.piece;
     }
   }
 };
