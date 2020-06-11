@@ -59,6 +59,13 @@ export default {
               owner: this.$whim.accessUser.id
             }
           },
+          2: {
+            0: null,
+            1: null,
+            2: null,
+            3: null,
+            4: null
+          },
           3: {
             0: null,
             1: null,
@@ -74,13 +81,6 @@ export default {
             4: null
           },
           5: {
-            0: null,
-            1: null,
-            2: null,
-            3: null,
-            4: null
-          },
-          6: {
             0: {
               piece: "fu",
               owner: this.$whim.accessUser.id
@@ -99,7 +99,7 @@ export default {
               owner: this.$whim.accessUser.id
             }
           },
-          7: {
+          6: {
             0: {
               piece: "kaku",
               owner: this.$whim.accessUser.id
