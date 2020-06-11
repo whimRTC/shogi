@@ -20,42 +20,42 @@ export default {
         board: {
           0: {
             0: {
-              piece: "hisha",
+              label: "hisha",
               owner: this.$whim.accessUser.id
             },
             1: {
-              piece: "gin",
+              label: "gin",
               owner: this.$whim.accessUser.id
             },
             2: {
-              piece: "ou",
+              label: "ou",
               owner: this.$whim.accessUser.id
             },
             3: {
-              piece: "kin",
+              label: "kin",
               owner: this.$whim.accessUser.id
             },
             4: {
-              piece: "kaku",
+              label: "kaku",
               owner: this.$whim.accessUser.id
             }
           },
           1: {
             0: {
-              piece: "fu",
+              label: "fu",
               owner: this.$whim.accessUser.id
             },
             1: {
-              piece: "fu",
+              label: "fu",
               owner: this.$whim.accessUser.id
             },
             2: null,
             3: {
-              piece: "fu",
+              label: "fu",
               owner: this.$whim.accessUser.id
             },
             4: {
-              piece: "fu",
+              label: "fu",
               owner: this.$whim.accessUser.id
             }
           },
@@ -82,42 +82,42 @@ export default {
           },
           5: {
             0: {
-              piece: "fu",
+              label: "fu",
               owner: this.$whim.accessUser.id
             },
             1: {
-              piece: "fu",
+              label: "fu",
               owner: this.$whim.accessUser.id
             },
             2: null,
             3: {
-              piece: "fu",
+              label: "fu",
               owner: this.$whim.accessUser.id
             },
             4: {
-              piece: "fu",
+              label: "fu",
               owner: this.$whim.accessUser.id
             }
           },
           6: {
             0: {
-              piece: "kaku",
+              label: "kaku",
               owner: this.$whim.accessUser.id
             },
             1: {
-              piece: "kin",
+              label: "kin",
               owner: this.$whim.accessUser.id
             },
             2: {
-              piece: "gyoku",
+              label: "gyoku",
               owner: this.$whim.accessUser.id
             },
             3: {
-              piece: "gin",
+              label: "gin",
               owner: this.$whim.accessUser.id
             },
             4: {
-              piece: "hisha",
+              label: "hisha",
               owner: this.$whim.accessUser.id
             }
           }

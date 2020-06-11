@@ -1,7 +1,14 @@
 <template>
   <div class="main">
     <div v-for="x in [0, 1, 2, 3, 4, 5, 6]" :key="x" class="row">
-      <div v-for="y in [0, 1, 2, 3, 4]" :key="y" class="col">
+      <div
+        v-for="y in [0, 1, 2, 3, 4]"
+        :key="y"
+        class="col"
+        @drop="dropPiece($event, [x, y])"
+        @dragover.prevent
+        @dragenter.prevent
+      >
         <Piece :x="x" :y="y" />
       </div>
     </div>
@@ -13,11 +20,35 @@ export default {
   name: "Main",
   components: {
     Piece: () => import("@/components/main/Piece")
+  },
+  methods: {
+    dropPiece(event, targetPlace) {
+      const originPlaceX = event.dataTransfer.getData("originPlaceX");
+      const originPlaceY = event.dataTransfer.getData("originPlaceY");
+      const pieceLabel = event.dataTransfer.getData("pieceLabel");
+      this.$whim.assignState({
+        board: {
+          [originPlaceX]: {
+            [originPlaceY]: null
+          }
+        }
+      });
+      this.$whim.assignState({
+        board: {
+          [targetPlace[0]]: {
+            [targetPlace[1]]: {
+              owner: this.$whim.accessUser.id,
+              label: pieceLabel
+            }
+          }
+        }
+      });
+    }
   }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .main {
   position: absolute;
   top: 50%;

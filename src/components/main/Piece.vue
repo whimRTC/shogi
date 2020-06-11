@@ -1,6 +1,12 @@
 <template>
   <div class="piece-box">
-    <img :src="require(`@/assets/${label}.png`)" class="piece" v-if="label" />
+    <img
+      :src="require(`@/assets/${label}.png`)"
+      class="piece"
+      v-if="label"
+      draggable
+      @dragstart="dragPiece($event, [x, y])"
+    />
   </div>
 </template>
 
@@ -13,7 +19,19 @@ export default {
   computed: {
     label() {
       // 存在しない場合は undefinedを返す
-      return (this.$whim.state.board[this.x] || {})[this.y]?.piece;
+      return this.piece?.label;
+    },
+    piece() {
+      return (this.$whim.state.board[this.x] || {})[this.y];
+    }
+  },
+  methods: {
+    dragPiece(event, place) {
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.dropEffect = "move";
+      event.dataTransfer.setData("originPlaceX", place[0]);
+      event.dataTransfer.setData("originPlaceY", place[1]);
+      event.dataTransfer.setData("pieceLabel", this.label);
     }
   }
 };
