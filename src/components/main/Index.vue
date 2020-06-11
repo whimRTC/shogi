@@ -1,56 +1,21 @@
 <template>
   <div class="main">
-    <div class="row">
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-    </div>
-    <div class="row">
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-    </div>
-    <div class="row">
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-    </div>
-    <div class="row">
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-    </div>
-    <div class="row">
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-    </div>
-    <div class="row">
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-    </div>
-    <div class="row">
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
-      <div class="col">王</div>
+    <div v-for="x in [0, 1, 2, 3, 4, 5, 6]" :key="x" class="row">
+      <div v-for="y in [0, 1, 2, 3, 4]" :key="y" class="col">
+        <Piece :x="x" :y="y" />
+      </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "Main",
+  components: {
+    Piece: () => import("@/components/main/Piece")
+  }
+};
+</script>
 
 <style lang="scss">
 .main {
