@@ -120,7 +120,7 @@ export default {
 }
 
 .row {
-  background: #b8883c70;
+  background: #ffffffe0;
   width: 90vw;
   max-width: 60vh;
   height: 18vw;

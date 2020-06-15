@@ -38,7 +38,7 @@ export default {
 
   @for $i from 0 to 7 {
     &.user-#{$i} {
-      border-color: rgba(map-get($user-colors, $i), 0.4);
+      border-color: rgba(map-get($user-colors, $i), 0.2);
       &.active {
         border-color: rgba(map-get($user-colors, $i), 0.8);
       }
