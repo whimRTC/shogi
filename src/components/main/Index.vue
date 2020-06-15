@@ -12,18 +12,32 @@
         <Piece :place="[x, y]" @dragging="setDragging" :dragging="dragging" />
       </div>
     </div>
-    <div>
+    <div
+      v-for="player in players"
+      :key="`player-${player}`"
+      :class="[
+        `background-${player}`,
+        `active-${$whim.state.currentTurnIndex}`
+      ]"
+    >
       <Hand
-        v-for="(hand, i) in hands"
-        :key="i"
+        v-for="(hand, j) in ($whim.state.hand || {})[player]"
+        :key="j"
         :hand="hand"
         @dragging="setDragging"
+        :player="player"
       ></Hand>
     </div>
   </div>
 </template>
 
 <script>
+function getAllIndexes(arr, val) {
+  let indexes = [];
+  for (let i = 0; i < arr.length; i++) if (arr[i] === val) indexes.push(i);
+  return indexes;
+}
+
 export default {
   name: "Main",
   data() {
@@ -51,7 +65,13 @@ export default {
       }
     },
     hands() {
-      return (this.$whim.state.hand || {})[this.$whim.accessUser.id];
+      return (this.$whim.state.hand || {})[this.$whim.state.currentTurnIndex];
+    },
+    players() {
+      return getAllIndexes(
+        this.$whim.state.turnOrder,
+        this.$whim.accessUser.id
+      );
     }
   },
   methods: {
@@ -63,22 +83,31 @@ export default {
         // コマをとる場合
         if (this.$piece(targetPlace)) {
           const hand = (
-            (this.$whim.state.hand || {})[this.$whim.accessUser.id] || []
+            (this.$whim.state.hand || {})[this.$whim.state.currentTurnIndex] ||
+            []
           ).concat(this.$piece(targetPlace).label);
           this.$whim.assignState({
             hand: {
-              [this.$whim.accessUser.id]: hand
+              [this.$whim.state.currentTurnIndex]: hand
             }
           });
+          // 勝利判定
+          if (["ou", "gyoku"].includes(this.$piece(targetPlace).label)) {
+            this.$whim.assignState({
+              winner: this.$myTeam(),
+              phase: "result"
+            });
+          }
         }
+
         // 手持ちから出す場合
         if (this.dragging.place === "hand") {
-          const hand = this.$whim.state.hand[this.$whim.accessUser.id];
+          const hand = this.$whim.state.hand[this.$whim.state.currentTurnIndex];
           const index = hand.indexOf(this.dragging.piece.label);
           hand.splice(index, 1);
           this.$whim.assignState({
             hand: {
-              [this.$whim.accessUser.id]: hand
+              [this.$whim.state.currentTurnIndex]: hand
             }
           });
         } else {
@@ -112,6 +141,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/colors.scss";
+
 .main {
   position: absolute;
   top: 50%;
@@ -122,9 +153,9 @@ export default {
 .row {
   background: #ffffffe0;
   width: 90vw;
-  max-width: 60vh;
+  max-width: 55vh;
   height: 18vw;
-  max-height: 12vh;
+  max-height: 11vh;
   display: flex;
 }
 
@@ -134,5 +165,14 @@ export default {
   height: 100%;
   box-sizing: border-box;
   text-align: center;
+}
+
+@for $i from 0 to 7 {
+  .background-#{$i} {
+    background-color: rgba(map-get($user-colors, $i), 0.3);
+    &.active-#{$i} {
+      background-color: rgba(map-get($user-colors, $i), 0.6);
+    }
+  }
 }
 </style>

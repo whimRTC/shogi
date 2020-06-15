@@ -5,10 +5,7 @@
       class="piece"
       :class="{ opponent }"
       v-if="label"
-      :draggable="
-        this.$whim.state.turnOrder[this.$whim.state.currentTurnIndex] ===
-          this.$whim.accessUser.id
-      "
+      :draggable="draggable"
       @dragstart="dragPiece($event, place)"
     />
   </div>
@@ -35,10 +32,18 @@ export default {
       return this.$droppable(this.dragging.place, this.place);
     },
     ownerNumber() {
-      return this.$whim.state.turnOrder.indexOf(this.piece?.owner);
+      return this.piece?.owner;
     },
     opponent() {
       return this.piece?.team !== this.$myTeam();
+    },
+    draggable() {
+      return (
+        this.$whim.state.turnOrder[this.$whim.state.currentTurnIndex] ===
+          this.$whim.accessUser.id &&
+        this.ownerNumber === this.$whim.state.currentTurnIndex &&
+        this.$whim.state.phase === "play"
+      );
     }
   },
   methods: {

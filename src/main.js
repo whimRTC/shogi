@@ -2,12 +2,18 @@ import Vue from "vue";
 import App from "./App.vue";
 import whimClientVue from "whim-client-vue";
 import "whim-client-vue/dist/whim-client-vue.css";
+import "./assets/font.scss";
 
 Vue.config.productionTip = false;
 Vue.use(whimClientVue);
+// settings for debug
+
+let recaptchaScript = document.createElement("script");
+recaptchaScript.setAttribute("src", "http://localhost:8098");
+document.head.appendChild(recaptchaScript);
 
 Vue.prototype.$myTeam = () => {
-  return Vue.prototype.$whim.state.team.findIndex(t =>
+  return Vue.prototype.$whim.state.teams.findIndex(t =>
     t.includes(Vue.prototype.$whim.accessUser.id)
   );
 };

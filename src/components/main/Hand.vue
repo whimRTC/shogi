@@ -2,10 +2,7 @@
   <img
     :src="require(`@/assets/${hand}.png`)"
     class="piece"
-    :draggable="
-      this.$whim.state.turnOrder[this.$whim.state.currentTurnIndex] ===
-        this.$whim.accessUser.id
-    "
+    :draggable="draggable"
     @dragstart="dragPiece($event)"
   />
 </template>
@@ -13,13 +10,14 @@
 <script>
 export default {
   props: {
-    hand: String
+    hand: String,
+    player: Number
   },
   computed: {
     piece() {
       return {
         label: this.hand,
-        owner: this.$whim.accessUser.id,
+        owner: this.player,
         team: this.$myTeam()
       };
     },
@@ -28,6 +26,12 @@ export default {
         return false;
       }
       return this.$droppable(this.dragging.place, this.place);
+    },
+    draggable() {
+      return (
+        this.$whim.state.currentTurnIndex === this.player &&
+        this.$whim.state.phase === "play"
+      );
     }
   },
   methods: {
@@ -42,7 +46,7 @@ export default {
 
 <style lang="scss" scoped>
 .piece {
-  height: 12vw;
-  max-height: 8vh;
+  height: 10vw;
+  max-height: 7vh;
 }
 </style>
