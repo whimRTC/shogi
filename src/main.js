@@ -6,11 +6,11 @@ import "./assets/font.scss";
 
 Vue.config.productionTip = false;
 Vue.use(whimClientVue);
-// settings for debug
 
-let recaptchaScript = document.createElement("script");
-recaptchaScript.setAttribute("src", "http://localhost:8098");
-document.head.appendChild(recaptchaScript);
+// settings for debug
+// let recaptchaScript = document.createElement("script");
+// recaptchaScript.setAttribute("src", "http://localhost:8098");
+// document.head.appendChild(recaptchaScript);
 
 Vue.prototype.$myTeam = () => {
   return Vue.prototype.$whim.state.teams.findIndex(t =>
