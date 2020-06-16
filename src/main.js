@@ -64,7 +64,7 @@ Vue.prototype.$droppable = (originPlace, targetPlace) => {
       [x + 1, y],
       [x + 1, y + 1]
     ];
-  } else if (piece.label === "kin") {
+  } else if (piece.label === "kin" || piece.label === "to") {
     possibilityPlaces = [
       [x + direction, y - 1],
       [x + direction, y],

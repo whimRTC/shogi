@@ -169,6 +169,13 @@ export default {
               }
             }
           });
+          // 成る場合
+          if (
+            this.dragging.piece.label === "fu" &&
+            (1 - this.dragging.piece.team) * 5 === targetPlace[0]
+          ) {
+            this.dragging.piece.label = "to";
+          }
         }
         let nextIndex =
           (this.$whim.state.currentTurnIndex + 1) %
