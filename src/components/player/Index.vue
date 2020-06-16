@@ -50,40 +50,10 @@ export default {
 
 .team {
   font-weight: bold;
+  text-shadow: 1px 1px 0 #fff, -1px -1px 0 #fff, -1px 1px 0 #fff,
+    1px -1px 0 #fff, 0px 1px 0 #fff, 0-1px 0 #fff, -1px 0 0 #fff, 1px 0 0 #fff;
 }
 
-// .border {
-//   // border: solid;
-//   // box-sizing: border-box;
-//   // border-radius: 20px;
-//   // border-width: 10px;
-//   // box-shadow: 0 0 0 10px blue inset, 0 0 0 20px red inset;
-
-//   @for $i from 0 to 7 {
-//     &.user-#{$i} {
-//       box-shadow: 0 0 0 10px rgba(map-get($user-colors, $i), 0.2) inset;
-//       &.active-#{$i} {
-//         box-shadow: 0 0 0 10px rgba(map-get($user-colors, $i), 0.8) inset;
-//       }
-//     }
-//   }
-//   @for $i from 0 to 7 {
-//     @for $j from 0 to 7 {
-//       &.user-#{$i}-#{$j} {
-//         box-shadow: 0 0 0 10px rgba(map-get($user-colors, $i), 0.2) inset,
-//           0px 0px 0 10px rgba(map-get($user-colors, $j), 0.2) inset;
-//         &.active-#{$i} {
-//           box-shadow: 0 0 0 10px rgba(map-get($user-colors, $i), 0.8) inset,
-//             0px 0px 0 10px rgba(map-get($user-colors, $j), 0.2) inset;
-//         }
-//         &.active-#{$j} {
-//           box-shadow: 0 0 0 10px rgba(map-get($user-colors, $i), 0.2) inset,
-//             0px 0px 0 10px rgba(map-get($user-colors, $j), 0.8) inset;
-//         }
-//       }
-//     }
-//   }
-// }
 .border {
   box-sizing: border-box;
   // border: 10px solid #0f0;
