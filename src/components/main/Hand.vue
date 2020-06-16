@@ -38,11 +38,9 @@ export default {
   methods: {
     dragPiece(event) {
       this.dragging = true;
-      setTimeout(() => {
-        this.$emit("dragging", { place: "hand", piece: this.piece });
-        event.dataTransfer.effectAllowed = "move";
-        event.dataTransfer.dropEffect = "move";
-      }, 100);
+      this.$emit("dragging", { place: "hand", piece: this.piece });
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.dropEffect = "move";
     },
     dragend() {
       this.$emit("dragging", null);
