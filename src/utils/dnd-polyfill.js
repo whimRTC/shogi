@@ -19,5 +19,5 @@ if (usePolyfill) {
     event.preventDefault();
   });
   // https://github.com/timruffles/mobile-drag-drop/issues/77
-  window.addEventListener("touchmove", function() {});
+  window.addEventListener("touchmove", function() {}, { passive: false });
 }
