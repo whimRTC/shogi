@@ -4,6 +4,7 @@
     class="piece"
     :draggable="draggable"
     @dragstart="dragPiece($event)"
+    @dragend="dragend"
   />
 </template>
 
@@ -39,6 +40,9 @@ export default {
       this.$emit("dragging", { place: "hand", piece: this.piece });
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.dropEffect = "move";
+    },
+    dragend() {
+      this.$emit("dragging", null);
     }
   }
 };

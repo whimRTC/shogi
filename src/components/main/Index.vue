@@ -1,5 +1,21 @@
 <template>
   <div class="main">
+    <div class="order">
+      <div
+        class="circle-0"
+        :class="`active-${$whim.state.currentTurnIndex}`"
+      ></div>
+      <template v-for="player in $whim.state.turnOrder.length - 1">
+        <a href="#" class="arrow" :key="`arrow-${player}`"></a>
+        <div
+          :key="player"
+          :class="[
+            `circle-${player}`,
+            `active-${$whim.state.currentTurnIndex}`
+          ]"
+        ></div>
+      </template>
+    </div>
     <div v-for="x in xRange" :key="x" class="row">
       <div
         v-for="y in yRange"
@@ -167,9 +183,64 @@ export default {
   text-align: center;
 }
 
+.order {
+  background: #ffffffe0;
+  display: flex;
+  justify-content: center;
+  padding: 3px;
+  @for $i from 0 to 7 {
+    .circle-#{$i} {
+      width: 9vw;
+      max-width: 5vh;
+      height: 9vw;
+      max-height: 5vh;
+      border-radius: 50%;
+      background-color: rgba(map-get($user-colors, $i), 0.15);
+      &.active-#{$i} {
+        background-color: rgba(map-get($user-colors, $i), 1);
+      }
+    }
+  }
+
+  .arrow {
+    position: relative;
+    display: inline-block;
+    padding: 0 0 0 16px;
+    color: #000;
+    vertical-align: middle;
+    text-decoration: none;
+    font-size: 15px;
+  }
+  .arrow::before,
+  .arrow::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    content: "";
+    vertical-align: middle;
+  }
+  .arrow::before {
+    left: 2px;
+    width: 7px;
+    height: 3px;
+    background: #000;
+  }
+  .arrow::after {
+    left: 2px;
+    width: 6px;
+    height: 6px;
+    border-top: 3px solid #000;
+    border-right: 3px solid #000;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+}
+
 @for $i from 0 to 7 {
   .background-#{$i} {
-    background-color: rgba(map-get($user-colors, $i), 0.3);
+    background-color: rgba(map-get($user-colors, $i), 0.2);
     &.active-#{$i} {
       background-color: rgba(map-get($user-colors, $i), 0.6);
     }

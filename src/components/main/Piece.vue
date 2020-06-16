@@ -7,6 +7,7 @@
       v-if="label"
       :draggable="draggable"
       @dragstart="dragPiece($event, place)"
+      @dragend="dragend"
     />
   </div>
 </template>
@@ -54,6 +55,9 @@ export default {
       event.dataTransfer.setData("originPlaceX", place[0]);
       event.dataTransfer.setData("originPlaceY", place[1]);
       event.dataTransfer.setData("pieceLabel", this.label);
+    },
+    dragend() {
+      this.$emit("dragging", null);
     }
   }
 };
@@ -73,7 +77,7 @@ export default {
   width: 60%;
 }
 .droppable {
-  background: #ffffff;
+  background: #00000050;
 }
 .opponent {
   transform: rotate(-180deg);
