@@ -2,6 +2,6 @@ html * {
   font-family: "Noto Sans JP", sans-serif;
 }
 
-*[draggable=true] &img {
+img[draggable=true] {
   -webkit-touch-callout: none;
 }
