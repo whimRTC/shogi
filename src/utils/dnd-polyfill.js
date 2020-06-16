@@ -15,9 +15,9 @@ const usePolyfill = polyfill({
 if (usePolyfill) {
   // https://github.com/timruffles/mobile-drag-drop#polyfill-requires-dragenter-listener
   // このpolyfill使用の場合 dragenter イベント時に Event.preventDefault() を呼ぶ必要がある
+  document.addEventListener("touchmove", function() {}, { passive: false });
   document.addEventListener("dragenter", function(event) {
     event.preventDefault();
   });
   // https://github.com/timruffles/mobile-drag-drop/issues/77
-  window.addEventListener("touchmove", function() {}, { passive: false });
 }
