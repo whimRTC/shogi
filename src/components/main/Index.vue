@@ -51,6 +51,12 @@
 </template>
 
 <script>
+import { Howl } from "howler";
+
+const SE_MOVE = new Howl({
+  src: require("@/assets/shogi.mp3")
+});
+
 function getAllIndexes(arr, val) {
   let indexes = [];
   for (let i = 0; i < arr.length; i++) if (arr[i] === val) indexes.push(i);
@@ -96,6 +102,9 @@ export default {
       return player => {
         return (this.$whim.state.knockOut || []).includes(player);
       };
+    },
+    sound() {
+      return this.$whim.state.sound;
     }
   },
   methods: {
@@ -193,10 +202,22 @@ export default {
               }
             }
           },
-          currentTurnIndex: nextIndex
+          currentTurnIndex: nextIndex,
+          sound: true
         });
       }
       this.dragging = null;
+    }
+  },
+  watch: {
+    sound: function(newSound) {
+      if (newSound) {
+        SE_MOVE.volume(0.1);
+        SE_MOVE.play();
+        this.$whim.assignState({
+          sound: false
+        });
+      }
     }
   }
 };
