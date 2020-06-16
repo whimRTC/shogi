@@ -59,18 +59,12 @@ export default {
   // margin: 5px;
 }
 .dragging {
-  // visibility: hidden;
-  // transition: opacity visibility linear 0.1s;
-
   height: 20vw !important;
   max-height: 14vh !important;
   visibility: hidden;
-
-  // z-index: -1;
-  // clip: rect(1px, 1px, 1px, 1px);
   position: absolute;
   transform: scale(0, 0);
   transition-duration: 0.01s;
-  transition-property: transform, visibility, position;
+  transition-property: transform, visibility, position, height;
 }
 </style>
