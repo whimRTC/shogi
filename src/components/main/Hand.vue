@@ -63,8 +63,8 @@ export default {
   max-height: 14vh !important;
   visibility: hidden;
   position: absolute;
-  transform: scale(0, 0);
+  // transform: scale(0, 0);
   transition-duration: 0.01s;
-  transition-property: transform, visibility, position, height;
+  transition-property: visibility, position;
 }
 </style>
