@@ -89,8 +89,8 @@ export default {
                 team: 0
               };
             } else {
-              board[6] = {};
-              board[6][2] = {
+              board[5] = {};
+              board[5][2] = {
                 label: "gyoku",
                 owner: player,
                 team: 1

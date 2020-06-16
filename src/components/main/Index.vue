@@ -1,10 +1,10 @@
 <template>
   <div class="main">
     <div class="order">
-      <div
-        class="circle-0"
-        :class="`active-${$whim.state.currentTurnIndex}`"
-      ></div>
+      <div class="circle-0" :class="`active-${$whim.state.currentTurnIndex}`">
+        <div v-if="wasKnockOut(0)" class="knock-out"></div>
+      </div>
+
       <template v-for="player in $whim.state.turnOrder.length - 1">
         <a href="#" class="arrow" :key="`arrow-${player}`"></a>
         <div
@@ -13,7 +13,9 @@
             `circle-${player}`,
             `active-${$whim.state.currentTurnIndex}`
           ]"
-        ></div>
+        >
+          <div v-if="wasKnockOut(player)" class="knock-out"></div>
+        </div>
       </template>
     </div>
     <div v-for="x in xRange" :key="x" class="row">
@@ -30,6 +32,7 @@
     </div>
     <div
       v-for="player in players"
+      class="hands"
       :key="`player-${player}`"
       :class="[
         `background-${player}`,
@@ -68,9 +71,9 @@ export default {
   computed: {
     xRange() {
       if (this.$myTeam() === 1) {
-        return Array.from({ length: 7 }, (v, k) => k);
+        return Array.from({ length: 6 }, (v, k) => k);
       } else {
-        return Array.from({ length: 7 }, (v, k) => 6 - k);
+        return Array.from({ length: 6 }, (v, k) => 5 - k);
       }
     },
     yRange() {
@@ -88,11 +91,35 @@ export default {
         this.$whim.state.turnOrder,
         this.$whim.accessUser.id
       );
+    },
+    wasKnockOut() {
+      return player => {
+        return (this.$whim.state.knockOut || []).includes(player);
+      };
     }
   },
   methods: {
     setDragging(payload) {
       this.dragging = payload;
+    },
+
+    isKnockOut(player, targetPlace) {
+      for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < 5; j++) {
+          if (i === targetPlace[0] && j === targetPlace[1]) {
+            continue;
+          }
+          if ((this.$whim.state.board[i] || {})[j]?.owner === player) {
+            return false;
+          }
+        }
+      }
+      console.log("t1");
+      const player_hand = (this.$whim.state.hand || {})[player] || [];
+      if (player_hand.length === 0) {
+        return true;
+      }
+      return false;
     },
     dropPiece(event, targetPlace) {
       if (this.$droppable(this.dragging.place, targetPlace)) {
@@ -112,6 +139,14 @@ export default {
             this.$whim.assignState({
               winner: this.$myTeam(),
               phase: "result"
+            });
+          }
+
+          // 戦闘不能判定
+          const owner = this.$piece(targetPlace).owner;
+          if (this.isKnockOut(owner, targetPlace)) {
+            this.$whim.assignState({
+              knockOut: (this.$whim.state.knockOut || []).concat(owner)
             });
           }
         }
@@ -135,6 +170,12 @@ export default {
             }
           });
         }
+        let nextIndex =
+          (this.$whim.state.currentTurnIndex + 1) %
+          this.$whim.state.turnOrder.length;
+        while ((this.$whim.state.knockOut || []).includes(nextIndex)) {
+          nextIndex = (nextIndex + 1) % this.$whim.state.turnOrder.length;
+        }
         this.$whim.assignState({
           board: {
             [targetPlace[0]]: {
@@ -145,9 +186,7 @@ export default {
               }
             }
           },
-          currentTurnIndex:
-            (this.$whim.state.currentTurnIndex + 1) %
-            this.$whim.state.turnOrder.length
+          currentTurnIndex: nextIndex
         });
       }
       this.dragging = null;
@@ -190,6 +229,8 @@ export default {
   padding: 3px;
   @for $i from 0 to 7 {
     .circle-#{$i} {
+      position: relative;
+
       width: 9vw;
       max-width: 5vh;
       height: 9vw;
@@ -236,6 +277,35 @@ export default {
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
   }
+}
+
+.knock-out {
+  display: inline-block;
+  position: absolute;
+  z-index: 1;
+  padding: 0;
+  width: 4px;
+  height: 20px;
+  background: #000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.knock-out:before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  width: 20px;
+  height: 4px;
+  margin-top: -2px;
+  background: #000;
+}
+
+.hands {
+  height: 10vw;
+  max-height: 7vh;
 }
 
 @for $i from 0 to 7 {

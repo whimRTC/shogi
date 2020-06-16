@@ -77,7 +77,7 @@ export default {
   width: 60%;
 }
 .droppable {
-  background: #00000050;
+  background: #00000050 !important;
 }
 .opponent {
   transform: rotate(-180deg);
