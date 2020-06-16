@@ -3,6 +3,7 @@
     :src="require(`@/assets/${hand}.png`)"
     class="piece"
     :draggable="draggable"
+    :class="{ dragging }"
     @dragstart="dragPiece($event)"
     @dragend="dragend"
   />
@@ -10,6 +11,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      dragging: false
+    };
+  },
   props: {
     hand: String,
     player: Number
@@ -22,12 +28,6 @@ export default {
         team: this.$myTeam()
       };
     },
-    droppable() {
-      if (!this.dragging) {
-        return false;
-      }
-      return this.$droppable(this.dragging.place, this.place);
-    },
     draggable() {
       return (
         this.$whim.state.currentTurnIndex === this.player &&
@@ -37,12 +37,14 @@ export default {
   },
   methods: {
     dragPiece(event) {
+      this.dragging = true;
       this.$emit("dragging", { place: "hand", piece: this.piece });
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.dropEffect = "move";
     },
     dragend() {
       this.$emit("dragging", null);
+      this.dragging = false;
     }
   }
 };
@@ -52,5 +54,23 @@ export default {
 .piece {
   height: 10vw;
   max-height: 7vh;
+  float: left;
+  // position: absolute;
+  // margin: 5px;
+}
+.dragging {
+  // visibility: hidden;
+  // transition: opacity visibility linear 0.1s;
+
+  height: 20vw !important;
+  max-height: 14vh !important;
+  visibility: hidden;
+
+  // z-index: -1;
+  // clip: rect(1px, 1px, 1px, 1px);
+  position: absolute;
+  transform: scale(0, 0);
+  transition-duration: 0.01s;
+  transition-property: transform, visibility, position;
 }
 </style>

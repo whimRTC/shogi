@@ -313,6 +313,8 @@ export default {
 .hands {
   height: 10vw;
   max-height: 7vh;
+  width: 90vw;
+  max-width: 55vh;
 }
 
 @for $i from 0 to 7 {
