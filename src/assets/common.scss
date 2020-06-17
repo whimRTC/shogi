@@ -9,6 +9,8 @@ img[draggable=true] {
 .dnd-poly-drag-image {
   opacity: 1 !important;
   width: 100px !important;
+  height: 100px !important;
+  position: absolute !important;
 }
 /* applied when the drag effect is none and the operation ends */
 .dnd-poly-drag-image.snapback {
