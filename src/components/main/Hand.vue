@@ -55,12 +55,10 @@ export default {
   height: 10vw;
   max-height: 7vh;
   float: left;
-  // position: absolute;
-  // margin: 5px;
 }
 .dragging {
-  height: 20vw !important;
-  max-height: 14vh !important;
+  height: 18vw !important;
+  max-height: 12vh !important;
   visibility: hidden;
   position: absolute;
   // transform: scale(0, 0);

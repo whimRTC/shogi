@@ -3,7 +3,7 @@
     <img
       :src="require(`@/assets/${label}.png`)"
       class="piece"
-      :class="{ opponent }"
+      :class="{ opponent, dragging: myDragging }"
       v-if="label"
       :draggable="draggable"
       @dragstart="dragPiece($event, place)"
@@ -14,6 +14,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      myDragging: false
+    };
+  },
   props: {
     place: Array,
     dragging: Object || null
@@ -55,9 +60,11 @@ export default {
       event.dataTransfer.setData("originPlaceX", place[0]);
       event.dataTransfer.setData("originPlaceY", place[1]);
       event.dataTransfer.setData("pieceLabel", this.label);
+      this.myDragging = true;
     },
     dragend() {
       this.$emit("dragging", null);
+      this.myDragging = false;
     }
   }
 };
@@ -87,5 +94,17 @@ export default {
   .background-#{$i} {
     background-color: rgba(map-get($user-colors, $i), 0.3);
   }
+}
+
+.dragging {
+  height: 18vw !important;
+  max-height: 12vh !important;
+  width: 18vw !important;
+  max-width: 12vh !important;
+  visibility: hidden;
+  position: absolute;
+  // transform: scale(0, 0);
+  transition-duration: 0.01s;
+  transition-property: visibility, position;
 }
 </style>
