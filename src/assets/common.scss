@@ -10,6 +10,7 @@ img[draggable=true] {
   opacity: 1 !important;
   width: 122px !important;
   height: 150px !important;
+  max-height: 150px !important;
   position: absolute !important;
 }
 /* applied when the drag effect is none and the operation ends */
