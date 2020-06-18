@@ -42,7 +42,6 @@ Vue.prototype.$droppable = (originPlace, targetPlace) => {
   const x = originPlace[0];
   const y = originPlace[1];
   let possibilityPlaces = [];
-  let numList = Array.from({ length: 6 }, (v, k) => k + 1);
   if (piece.label === "fu") {
     possibilityPlaces = [[x + direction, y]];
   } else if (piece.label === "gin") {
@@ -74,23 +73,42 @@ Vue.prototype.$droppable = (originPlace, targetPlace) => {
       [x - direction, y]
     ];
   } else if (piece.label === "kaku") {
-    possibilityPlaces = possibilityPlaces.concat(
-      numList.map(i => [x - i, y - i])
-    );
-    possibilityPlaces = possibilityPlaces.concat(
-      numList.map(i => [x + i, y - i])
-    );
-    possibilityPlaces = possibilityPlaces.concat(
-      numList.map(i => [x - i, y + i])
-    );
-    possibilityPlaces = possibilityPlaces.concat(
-      numList.map(i => [x + i, y + i])
-    );
+    const kakuDirections = [
+      [-1, -1],
+      [-1, 1],
+      [1, -1],
+      [1, 1]
+    ];
+    kakuDirections.forEach(kakuDirection => {
+      for (let i = 1; i <= 5; i++) {
+        const movedPlace = [x + kakuDirection[0] * i, y + kakuDirection[1] * i];
+        possibilityPlaces.push(movedPlace);
+        // 他のコマは飛び越えられない
+        if (Vue.prototype.$piece(movedPlace)) {
+          break;
+        }
+      }
+    });
   } else if (piece.label === "hisha") {
-    possibilityPlaces = possibilityPlaces.concat(numList.map(i => [x, y - i]));
-    possibilityPlaces = possibilityPlaces.concat(numList.map(i => [x, y + i]));
-    possibilityPlaces = possibilityPlaces.concat(numList.map(i => [x - i, y]));
-    possibilityPlaces = possibilityPlaces.concat(numList.map(i => [x + i, y]));
+    const hishaDirections = [
+      [-1, 0],
+      [1, 0],
+      [0, -1],
+      [0, 1]
+    ];
+    hishaDirections.forEach(hishaDirection => {
+      for (let i = 1; i <= 5; i++) {
+        const movedPlace = [
+          x + hishaDirection[0] * i,
+          y + hishaDirection[1] * i
+        ];
+        possibilityPlaces.push(movedPlace);
+        // 他のコマは飛び越えられない
+        if (Vue.prototype.$piece(movedPlace)) {
+          break;
+        }
+      }
+    });
   }
   return possibilityPlaces.some(
     pp => JSON.stringify(pp) === JSON.stringify(targetPlace)

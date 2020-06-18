@@ -18,7 +18,7 @@
         </div>
       </template>
     </div>
-    <div v-for="x in xRange" :key="x" class="row">
+    <div v-for="x in xRange" :key="x" class="row" :class="`row-${x}`">
       <div
         v-for="y in yRange"
         :key="y"
@@ -134,10 +134,15 @@ export default {
       if (this.$droppable(this.dragging.place, targetPlace)) {
         // コマをとる場合
         if (this.$piece(targetPlace)) {
+          let targetLabel = this.$piece(targetPlace).label;
+          // とを取ったら歩兵に戻す
+          if (targetLabel === "to") {
+            targetLabel = "fu";
+          }
           const hand = (
             (this.$whim.state.hand || {})[this.$whim.state.currentTurnIndex] ||
             []
-          ).concat(this.$piece(targetPlace).label);
+          ).concat(targetLabel);
           this.$whim.assignState({
             hand: {
               [this.$whim.state.currentTurnIndex]: hand
@@ -240,6 +245,14 @@ export default {
   height: 18vw;
   max-height: 11vh;
   display: flex;
+  box-sizing: border-box;
+  border: solid;
+  border-width: 0px 2px;
+
+  &.row-0,
+  &.row-5 {
+    border: solid 2px;
+  }
 }
 
 .col {
